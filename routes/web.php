@@ -28,5 +28,7 @@ Route::group(['middleware'=>['auth','admin']],function(){
 //media
   Route::get('/media','MediaController@index');
   Route::post('/addmedia','MediaController@store')->name('addmedia');
+  Route::get('/category','CategoryController@index');
+  Route::get('/delcat','CategoryController@destroy')->name('delcat');
 
 });

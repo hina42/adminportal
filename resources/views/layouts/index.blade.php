@@ -370,6 +370,19 @@
                   </li>
                   <li class="treeview">
                      <a href="#">
+                     <i class="fa fa-database"></i><span>Catalog</span>
+                     <span class="pull-right-container">
+                     <i class="fa fa-angle-left pull-right"></i>
+                     </span>
+                     </a>
+                     <ul class="treeview-menu">
+                        <li><a href="category">Category</a></li>
+                        <li><a href="clist.html">Product</a></li>
+                       
+                     </ul>
+                  </li>
+                  <li class="treeview">
+                     <a href="#">
                      <i class="fa fa-shopping-basket"></i><span>Transaction</span>
                      <span class="pull-right-container">
                      <i class="fa fa-angle-left pull-right"></i>
