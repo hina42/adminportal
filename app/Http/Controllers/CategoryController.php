@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\category;
+use App\subcategory;
+use App\product;
 class CategoryController extends Controller
 {
     /**
@@ -44,7 +46,28 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if($request->has('catname'))
+        {$cat = new category();
+            $cat->CatName = $request->catname;
+            $cat->CategoryType = $request->cattype;
+            $cat->image = 'http://waar.ae/waar/img/embroidery2.jpg';
+          $cat->save();
+        }
+        if($request->has('subcattype'))
+        {   $subcat = new subcategory();
+            $subcat->SubCatType = $request->subcattype;
+            $subcat->CategoryID = $request->catid;
+        //  $subcat->save();
+        }
+        // if($request->has('prdname'))
+        // {$prd = new product();
+        //     $prd->ProductName = $request->prdname;
+        //     $prd->SubCatID = $request->subcategory;
+        //     $prd->ProductPrice = $request->price;
+        //     $prd->Image = 'http://waar.ae/waar/img/embroidery2.jpg';
+        //   $prd->save();
+        // }
+        return response()->json("success"); 
     }
 
     /**
