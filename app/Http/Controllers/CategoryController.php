@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\category;
 use App\subcategory;
 use App\product;
+use App\description;
+use App\color;
 class CategoryController extends Controller
 {
     /**
@@ -15,17 +17,21 @@ class CategoryController extends Controller
      */
     public function index()
     {     $data = array();
-        $cat = category::pluck('CategoryID');
+        $cat = category::pluck('CategoryID');$max = 0;$maxsubcatid =0;
         foreach($cat as $id){
            $catdata =  category::where('CategoryID',$id)
            ->first();  
-           $catdata->subcategory;
+           $catdata->subcategory = subcategory::where('CategoryID',$id)->paginate(2);
+           $count=  subcategory::where('CategoryID',$id)->count('SubCatType');
+   
+        if($count > $max)
+      {  $max = $count; $maxsubcatid = $id;}
            $data[] = $catdata;
         }
       
-        return view('admin.category',['data'=>$data]);
+        return view('admin.category',['data'=>$data, 'max'=>$maxsubcatid]);
        
-       //dd($data);
+    //   dd($maxsubcatid);
     }
 
     /**
@@ -46,27 +52,33 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->has('catname'))
+        if(!$request->catname == null)
         {$cat = new category();
             $cat->CatName = $request->catname;
             $cat->CategoryType = $request->cattype;
             $cat->image = 'http://waar.ae/waar/img/embroidery2.jpg';
           $cat->save();
         }
-        if($request->has('subcattype'))
+        if(!$request->subcattype == null)
         {   $subcat = new subcategory();
             $subcat->SubCatType = $request->subcattype;
             $subcat->CategoryID = $request->catid;
-        //  $subcat->save();
+            $subcat->save();
         }
-        // if($request->has('prdname'))
-        // {$prd = new product();
-        //     $prd->ProductName = $request->prdname;
-        //     $prd->SubCatID = $request->subcategory;
-        //     $prd->ProductPrice = $request->price;
-        //     $prd->Image = 'http://waar.ae/waar/img/embroidery2.jpg';
-        //   $prd->save();
-        // }
+        if($request->has('prdname'))
+        {$prd = new product();
+            $prd->ProductName = $request->prdname;
+            $prd->SubCatID = $request->subcategory;
+            $prd->ProductPrice = $request->price;
+            $desc = new description();
+            $color = new color();
+            $desc->Description = $request->desc;
+            $desc->save();
+            $descid = $desc->DescriptionID;
+            $prd->DescriptionID = $descid;
+            $prd->Image = 'http://waar.ae/waar/img/embroidery2.jpg';
+          $prd->save();
+        }
         return response()->json("success"); 
     }
 
@@ -112,14 +124,15 @@ class CategoryController extends Controller
      */
     public function destroy()
     {$id = request()->query('id');
-        $cat = category::find($id); $data ="";
+        $cat = category::find($id); 
         if(!$cat==null){
              $cat->delete();
-             $data = "success";
+             $subcat = subcategory::where('CategoryID',$id)->pluck('SubCatID');
+            foreach($subcat as $id){
+             $subcatdata = subcategory::find($id)->delete();
+            }
         }
-        else{
-            $data = "failure";
-        }
-      return response()->json($data);
+        
+      return response()->json($id);
     }
 }

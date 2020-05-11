@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\category;
+use App\subcategory;
+use App\product;
+use App\color;
+use App\yard;
+use App\size;
 class ProductController extends Controller
 {
     /**
@@ -12,8 +17,22 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        //
+    {      $finaldata = array();
+        $prd = product::pluck('ProductID');
+          foreach ($prd as $id) {
+            $data=product::where('ProductID',$id)->first();
+            //  $checkyard=yard::where('productid',$data['ProductID'])->select('Min','Max')->get();
+            //      if($checkyard->isEmpty())
+            //       $data->yard=null;
+            //       else
+            //      $data['yard']=$checkyard[0];
+            $data->color;
+            $data->size;
+            $data->yard;
+            $data->subcategory;
+            $finaldata[]=$data;}
+      return view('admin.product',['data'=>$finaldata]);
+    // return dd($finaldata[0]->yard['Min']);
     }
 
     /**

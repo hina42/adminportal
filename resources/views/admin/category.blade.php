@@ -37,7 +37,7 @@
                                        <td>{{$row->CatName}}</td>
                                        <td>{{$row->CategoryType}}</td>
                                        <td>  @foreach($row->subcategory as $subcat)
-                                       {{$subcat->SubCatType}} <br>
+                                       - {{$subcat->SubCatType}} <br>
                                        @endforeach</td>
                                        <td>{{$row->created_at}}</td>
                                        <td>{{$row->updated_at}}</td>
@@ -47,9 +47,13 @@
                                        <a href="#delitem" id='{{$row->CategoryID}}' data-toggle="modal" data-target="#delitem"class="del btn-sm btn-danger" ><i class="fa fa-trash"></i></a>
                                        </td>
                                     </tr>
+                                   
                                     @endforeach
                                  </tbody>
-                              </table>
+                              </table> 
+                             
+                               {{$data[$max-1]->subcategory->links()}}
+                              
                            </div>
                         </div>
                      </div>
@@ -64,6 +68,7 @@
                            <h3><i class="fa fa-plus m-r-5"></i> Add new Item</h3>
                         </div>
                         <div class="modal-body">
+                        <p style="color:#FFBD00;font-weight:bold;align-text:center">To add data of specific item, you must select form type</p>
                         <div class="col-md-4">
                                           <label class="control-label">Form Type</label>
                                           <select placeholder="Item type" id="formtype"class="form-control">
@@ -79,7 +84,7 @@
                                  <fieldset id="addcat">
                                        <!-- Text input-->
                                       
-                                      
+                                      <p style="color:blue;font-weight:bold">Enter data to add category...</p>
                                        <!-- Text input-->
                                        <div class="col-md-6 form-group">
                                           <label class="control-label">Name</label>
@@ -104,7 +109,7 @@
 
 
                                     <fieldset id="addsubcat">
-                             
+                                    <p style="color:blue;font-weight:bold">Enter data to add subcategory...</p>
                                        <div class="col-md-6 form-group">
                                           <label class="control-label">Select Category</label>
                                        <select name="catid" id="category" type="text" placeholder="Item Name" class="form-control">
@@ -128,6 +133,7 @@
 
 
                                     <fieldset id="addprd">
+                                    <p style="color:blue;font-weight:bold">Enter data to add product...</p>
                                        <div class="col-md-6 form-group">
                                           <label class="control-label">Select Subcategory</label>
                                        <select name="subcategory" id="subcategory" type="text" placeholder="Item Name" class="form-control">
@@ -146,17 +152,22 @@
                                           <input type="text" name="prdname"placeholder="Enter product name" class="form-control">
                                        </div>
                                        <!-- Text input-->
-                                       <div class="col-md-6 form-group">
-                                          <label class="control-label">Quantity</label>
-                                          <input type="number" name="quantity" placeholder="Enter quantity" class="form-control">
+                                       
+                                       <div id="colorinput"class="col-md-6 form-group">
+                                          <label class="control-label">color</label>
+                                          <input id="color"type="color"name="color" placeholder="Enter color" class="form-control">
+                                          <div  style="margin:2% 2% 2% 2%;"id="show" class=" btn btn-sm btn-warning"><i class="fa fa-plus"></i></div>
+                                          <div  style="margin:2% 2% 2% 2%;"id="minus" class=" btn btn-sm btn-danger"><i class="fa fa-minus"></i></div>
+                                          <input type="hidden" name="colorarray" id="colorarray">
                                        </div>
+                                     
                                        <div class="col-md-6 form-group">
                                           <label class="control-label">Price</label>
                                           <input type="number" placeholder="Enter price" name="price"class="form-control">
                                        </div>
                                        <div class="col-md-12 form-group">
                                           <label class="control-label">Description</label><br>
-                                          <input type="text" class="form-control" name="Description" >
+                                          <input type="text" class="form-control" name="desc" >
                                        </div>
                                        <div class="col-md-12 form-group">
                                           <label class="control-label">Image</label><br>
@@ -209,12 +220,32 @@
 @section('script')
 <script>
 $(document).ready(function(){
+   var color = [];
+ $('#show').click(function(){
+ var newcolor = $('#color').val();
+ color.push(newcolor);
+ $('#colorarray').val(color);
+ $('#colorinput').append(
+ '<div id="display" style="float:left;margin:2% 2% 2% 2%;background-color:'+newcolor+';height:20px;width:20px;border-radius:50px"></div>'
+ );
+console.log($('#colorarray').val());
+
+ });
+
+ $('#minus').click(function(){
+ color.pop();
+ $('#colorarray').val(color);
+ $('#display').remove();
+console.log($('#colorarray').val());
+
+ });
 
 $('.del').click(function(){
  var delid = $(this).attr('id');
  $('.delbtn').click(function(){
+   $(".item" + delid).remove();
    $.get("{{route('delcat')}}", {id:delid}, function(data){
-    $(".item"+delid).remove();
+     
   });
  });
    
