@@ -21,7 +21,7 @@ class CategoryController extends Controller
         foreach($cat as $id){
            $catdata =  category::where('CategoryID',$id)
            ->first();  
-           $catdata->subcategory = subcategory::where('CategoryID',$id)->paginate(2);
+           $catdata->subcategory = subcategory::where('CategoryID',$id)->paginate(3);
            $count=  subcategory::where('CategoryID',$id)->count('SubCatType');
    
         if($count > $max)
@@ -134,5 +134,24 @@ class CategoryController extends Controller
         }
         
       return response()->json($id);
+    }
+
+    public function searchsubcat(Request $request){
+        $data = subcategory::pluck('SubCatType');
+        $find = $request->name;$found = array(); $subcat = "";
+        if(!$find == null){
+    //    foreach($data as $name){
+    //      array_push($found,$name);
+    //    }
+       
+            foreach($data as $type){
+          if(strpos($type, $find) !== false)
+          {
+            echo "<option value='".$type."' >".$type."</option><br>";
+           
+         }
+        }
+         }
+       // return response()->json($subcat);
     }
 }

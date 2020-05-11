@@ -37,12 +37,12 @@ img{
                                     <tr  class="info">
                                        <th>Image</th>
                                        <th>Name</th>
-                                       <th>Price</th>
                                        <th>Subcategory</th>
                                        <th>Color</th>
                                        <th>size</th>
                                        <th>yard</th>
                                        <th>Description</th>
+                                       <th>Price</th>
                                        <th>Action</th>
                                     </tr>
                                  </thead>
@@ -51,7 +51,6 @@ img{
                                     <tr class='prd{{$row->ProductID}}'>
                                        <td><img  height="100" width="100" src="{{$row->Image}}" alt="..."></td>
                                        <td>{{$row->ProductName}}</td>
-                                       <td>{{$row->ProductPrice}}</td>
                                        <td>
                                        {{$row->subcategory['SubCatType']}} <br>
                                        </td>
@@ -72,6 +71,7 @@ img{
                                        @endif
                                        </td>
                                        <td>{{$row->desc}}</td>
+                                       <td>{{$row->ProductPrice}}</td>
                                        <td>
                                       <a href="#" class="btn-sm btn-warning" ><i class="fa fa-edit"></i></a>
                                        <a href="#delprd" id='{{$row->ProductID}}' data-toggle="modal" data-target="#delprd"class="prddel btn-sm btn-danger" ><i class="fa fa-trash"></i></a>

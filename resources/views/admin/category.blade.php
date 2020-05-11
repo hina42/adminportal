@@ -16,7 +16,7 @@ img{
    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
    border-radius:10%;
 }
-#display, a, span{
+#display, a, span, button, #show, #minus{
    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
@@ -85,7 +85,7 @@ img{
                            <h3><i class="fa fa-plus m-r-5"></i> Add new Item</h3>
                         </div>
                         <div class="modal-body">
-                        <p style="color:#FFBD00;font-weight:bold;align-text:center">To add data of specific item, you must select form type</p>
+                        <p style="color:#ffa200;font-weight:bold;align-text:center">To add data of specific item, you must select form type</p>
                         <div class="col-md-4">
                                           <label class="control-label">Form Type</label>
                                           <select placeholder="Item type" id="formtype"class="form-control">
@@ -151,25 +151,20 @@ img{
 
                                     <fieldset id="addprd">
                                     <p style="color:blue;font-weight:bold">Enter data to add product...</p>
-                                       <div class="col-md-6 form-group">
-                                          <label class="control-label">Select Subcategory</label>
-                                       <select name="subcategory" id="subcategory" type="text" placeholder="Item Name" class="form-control">
-                                       <option value="0" disabled="true" selected="true">Select</option>
-                                       @foreach($data as $row)
-                                       <option disabled="true" style="font-weight:bold; color:blue">{{$row->CategoryType}}</option>
-                                       @foreach($row->subcategory as $subcat)
-                                       <option value="{{$subcat->SubCatID}}"> - {{$subcat->SubCatType}}</option>
-                                       @endforeach
-                                       @endforeach
-                                       </select>
-                                       </div>
-                                       <!-- Text input-->
+                                     <!-- Text input-->
+                                     <div class="col-md-6 form-group">
+                                          <label class="control-label">Subcategory</label>
+                                          <input type="text" list="find" placeholder="search subcategory..." name="searchsubcat" id="searchsubcat" class="form-control">
+                                          <datalist id="find">
+                                          </datalist>
+                                         
+                                     </div>
                                        <div class="col-md-6 form-group">
                                           <label class="control-label">Product Name</label>
                                           <input type="text" name="prdname"placeholder="Enter product name" class="form-control">
                                        </div>
                                        <!-- Text input-->
-                                       
+                                      
                                        <div id="colorinput"class="col-md-6 form-group">
                                           <label class="control-label">color</label>
                                           <input id="color"type="color"name="color" placeholder="Enter color" class="form-control">
@@ -321,7 +316,13 @@ else if(form == 3)
    });});
 
 
-   
+$('#searchsubcat').keyup(function(){
+   var name = $('#searchsubcat').val();
+$.post('searchsubcat',{name : name,  "_token": "{{ csrf_token() }}",},function(data){
+$('#find').html(data);
+ });
+
+});
 
 });
 </script>

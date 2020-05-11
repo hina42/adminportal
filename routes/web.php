@@ -33,5 +33,6 @@ Route::group(['middleware'=>['auth','admin']],function(){
   Route::post('/additem','CategoryController@store')->name('additem');
   Route::get('/product','ProductController@index');
   Route::get('/delprd','ProductController@destroy')->name('delprd');
+  Route::post('/searchsubcat','CategoryController@searchsubcat')->name('searchsubcat');
 
 });
