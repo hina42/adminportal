@@ -4,6 +4,23 @@
 @endsection
 
 @section('content')
+<style>
+th{
+   text-align: center;
+}
+td {
+    vertical-align: middle;
+    text-align: center;
+}
+img{
+   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+   border-radius:10%;
+}
+#display, a, span{
+   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+</style>
 <div class="row">
                   <div class="col-sm-12">
                      <div class="panel panel-bd lobidrag">
@@ -19,7 +36,7 @@
                            <div style ="margin-top:2%"class="table-responsive">
                               <table id="dataTableExample1" class="table table-bordered table-striped table-hover">
                                  <thead>
-                                    <tr class="info">
+                                    <tr  class="info">
                                        <th>Image</th>
                                        <th>Name</th>
                                        <th>Type</th>
@@ -33,7 +50,7 @@
                                  <tbody>
                                  @foreach($data as $row)
                                     <tr class='item{{$row->CategoryID}}'>
-                                       <td><img height="80" width="100" src="{{$row->image}}" alt="..."></td>
+                                       <td><img  height="80" width="100" src="{{$row->image}}" alt="..."></td>
                                        <td>{{$row->CatName}}</td>
                                        <td>{{$row->CategoryType}}</td>
                                        <td>  @foreach($row->subcategory as $subcat)

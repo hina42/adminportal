@@ -21,18 +21,16 @@ class ProductController extends Controller
         $prd = product::pluck('ProductID');
           foreach ($prd as $id) {
             $data=product::where('ProductID',$id)->first();
-            //  $checkyard=yard::where('productid',$data['ProductID'])->select('Min','Max')->get();
-            //      if($checkyard->isEmpty())
-            //       $data->yard=null;
-            //       else
-            //      $data['yard']=$checkyard[0];
+            $descdata=product::where('ProductID',$id)->first();
+            $desc = $descdata->description->Description;
             $data->color;
+            $data->desc = $desc;
             $data->size;
             $data->yard;
             $data->subcategory;
             $finaldata[]=$data;}
       return view('admin.product',['data'=>$finaldata]);
-    // return dd($finaldata[0]->yard['Min']);
+    //return dd($finaldata[0]->desc);
     }
 
     /**
@@ -96,8 +94,11 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy()
+    { $id = request()->query('id');
+        $prd = product::find($id);
+        $prd->delete();
+        return response()->json($id);
+        
     }
 }

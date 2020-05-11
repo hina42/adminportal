@@ -32,5 +32,6 @@ Route::group(['middleware'=>['auth','admin']],function(){
   Route::get('/delcat','CategoryController@destroy')->name('delcat');
   Route::post('/additem','CategoryController@store')->name('additem');
   Route::get('/product','ProductController@index');
+  Route::get('/delprd','ProductController@destroy')->name('delprd');
 
 });

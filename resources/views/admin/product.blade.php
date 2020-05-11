@@ -4,6 +4,22 @@
 @endsection
 
 @section('content')
+<style>
+th{
+   text-align: center;
+}
+td {
+    vertical-align: middle;
+    text-align: center;
+}
+img{
+   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+   border-radius:10%;
+}
+#color, a{
+   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+</style>
 <div class="row">
                   <div class="col-sm-12">
                      <div class="panel panel-bd lobidrag">
@@ -16,9 +32,9 @@
                         </div>
                         <div class="panel-body">
                            <div style ="margin-top:2%"class="table-responsive">
-                              <table id="dataTableExample1" class="table table-bordered table-striped table-hover">
+                              <table   id="dataTableExample1" class="table table-bordered table-striped table-hover">
                                  <thead>
-                                    <tr class="info">
+                                    <tr  class="info">
                                        <th>Image</th>
                                        <th>Name</th>
                                        <th>Price</th>
@@ -26,13 +42,14 @@
                                        <th>Color</th>
                                        <th>size</th>
                                        <th>yard</th>
+                                       <th>Description</th>
                                        <th>Action</th>
                                     </tr>
                                  </thead>
                                  <tbody>
                                  @foreach($data as $row)
-                                    <tr class='item{{$row->ProductID}}'>
-                                       <td><img height="100" width="100" src="{{$row->Image}}" alt="..."></td>
+                                    <tr class='prd{{$row->ProductID}}'>
+                                       <td><img  height="100" width="100" src="{{$row->Image}}" alt="..."></td>
                                        <td>{{$row->ProductName}}</td>
                                        <td>{{$row->ProductPrice}}</td>
                                        <td>
@@ -40,7 +57,7 @@
                                        </td>
                                        <td>
                                        @foreach($row->color as $i)
-                                      <h1 style="float:left;margin:2% 2% 2% 2%;background-color:{{$i->Color}};height:20px;width:20px;border-radius:50px"></h1>
+                                      <h1 id="color"style="float:left;margin:2% 2% 2% 2%;background-color:{{$i->Color}};height:20px;width:20px;border-radius:50px"></h1>
                                        @endforeach
                                        </td>
                                        <td>
@@ -49,12 +66,15 @@
                                        @endforeach
                                        </td>
                                        <td>
-                                      
-                                      
+                                       @if(!$row->yard == null)
+                                      {{ 'Min: '.$row->yard['Min']}} <br>
+                                      {{ 'Max: '.$row->yard['Max']}}
+                                       @endif
                                        </td>
+                                       <td>{{$row->desc}}</td>
                                        <td>
                                       <a href="#" class="btn-sm btn-warning" ><i class="fa fa-edit"></i></a>
-                                       <a href="#delitem" id='{{$row->CategoryID}}' data-toggle="modal" data-target="#delitem"class="del btn-sm btn-danger" ><i class="fa fa-trash"></i></a>
+                                       <a href="#delprd" id='{{$row->ProductID}}' data-toggle="modal" data-target="#delprd"class="prddel btn-sm btn-danger" ><i class="fa fa-trash"></i></a>
                                        </td>
                                     </tr>
                                     @endforeach
@@ -66,35 +86,12 @@
                   </div>
                </div>
                <!-- items Modal1 -->
-               <div class="modal fade" id="additem" tabindex="-1" role="dialog" aria-hidden="true">
+               <div class="modal fade" id="delprd" tabindex="-1" role="dialog" aria-hidden="true">
                   <div class="modal-dialog">
-                     <div class="modal-content">
+                  <div class="modal-content">
                         <div class="modal-header modal-header-primary">
                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                           <h3><i class="fa fa-plus m-r-5"></i> Add new Item</h3>
-                        </div>
-                        <div class="modal-body">
-                        <div class="col-md-4">
-                  
-                           <div class="row">
-                              <div class="col-md-12">
-                     
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <!-- /.modal-content -->
-                  </div>
-                  <!-- /.modal-dialog -->
-               </div>
-               <!-- /.modal -->
-               <!-- delete Modal -->   
-                  <div class="modal fade" id="delitem" tabindex="-1" role="dialog" aria-hidden="true">
-                  <div class="modal-dialog">
-                     <div class="modal-content">
-                        <div class="modal-header modal-header-primary">
-                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                           <h3><i class="fa fa-trash"></i> Delete Item</h3>
+                           <h3><i class="fa fa-trash"></i> Delete Product</h3>
                         </div>
                         <div class="modal-body">
                            <div class="row">
@@ -104,20 +101,35 @@
                            </div>
                         </div>
                         <div class="modal-footer">
-                        <button type="button" class="delbtn btn btn-danger pull-left" >yes</button>
+                        <button type="button" class="delprdbtn btn btn-danger pull-left" >yes</button>
                            <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
                         </div>
                      </div>
                      <!-- /.modal-content -->
                   </div>
                   <!-- /.modal-dialog -->
-               </div> 
+               </div>
+               <!-- /.modal -->
+              <!-- Modal -->
+             
+                 
       @endsection
 
 
 @section('script')
 <script>
 $(document).ready(function(){
+   $('.prddel').click(function(){
+ var delid = $(this).attr('id');     // alert(delid);
+ $('.delprdbtn').click(function(){
+   $(".prd" + delid).remove();
+   $.get("{{route('delprd')}}", {id:delid}, function(data){
+     //alert(data);
+  });
+ });
+   
+});
+
 
 });
 </script>
