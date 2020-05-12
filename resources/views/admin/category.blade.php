@@ -16,7 +16,7 @@ img{
    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
    border-radius:10%;
 }
-#display, a, span, button, #show, #minus{
+#display, span, .btn-sm, #show, #minus{
    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
@@ -171,7 +171,7 @@ img{
                                           <input id="color"type="color"name="color" placeholder="Enter color" class="form-control">
                                           <div  style="margin:2% 2% 2% 2%;"id="show" class=" btn btn-sm btn-warning"><i class="fa fa-plus"></i></div>
                                           <div  style="margin:2% 2% 2% 2%;"id="minus" class=" btn btn-sm btn-danger"><i class="fa fa-minus"></i></div>
-                                          <div id="insertcolor">sds</div>
+                                          <div id="insertcolor"></div>
                                           <input type="hidden" name="colorarray" id="colorarray">
                                        </div>
                                        <div id="sizeinput"class="col-md-6 form-group">
@@ -179,12 +179,22 @@ img{
                                           <input id="size" type="text" name="size" placeholder="Enter size" class="form-control">
                                           <div  style="margin:2% 2% 2% 2%;"id="sizeshow" class=" btn btn-sm btn-warning"><i class="fa fa-plus"></i></div>
                                           <div  style="margin:2% 2% 2% 2%;"id="sizeminus" class=" btn btn-sm btn-danger"><i class="fa fa-minus"></i></div>
-                                         <div id="insertsize">sds</div>
+                                         <div id="insertsize"></div>
                                           <input type="hidden" name="sizearray" id="sizearray">
                                        </div>
                                        <div class="col-md-6 form-group">
                                           <label class="control-label">Price</label>
                                           <input type="number" placeholder="Enter price" name="price"class="form-control">
+                                       </div>
+                                       <div class="col-md-3  form-group">
+                                          <label class="control-label">Yard min</label>
+                                        <input type="number"  placeholder="Minimum" name="min"class="form-control">
+                                   
+                                       </div>
+                                       <div class="col-md-3  form-group">
+                                          <label class="control-label">Yard max</label>
+                                          <input type="number"  placeholder="Maximum" name="max"class="form-control ">
+                                   
                                        </div>
                                        <div class="col-md-12 form-group">
                                           <label class="control-label">Description</label><br>
@@ -241,6 +251,12 @@ img{
 @section('script')
 <script>
 $(document).ready(function(){
+   function removeElement(array, elem) {
+    var index = array.indexOf(elem);
+    if (index > -1) {
+        array.splice(index, 1);
+    }
+}
    var color = [];
    //addcolor
  $('#show').click(function(){
@@ -248,18 +264,17 @@ $(document).ready(function(){
  color.push(newcolor);
  $('#colorarray').val(color);
  $('#insertcolor').append(
- '<div id="display" style="float:left;margin:2% 2% 2% 2%;background-color:'+newcolor+';height:20px;width:20px;border-radius:50px"></div>'
+ '<div class="color btn-sm" value="'+newcolor+'" id="display" style="float:left;margin:2% 2% 2% 2%;background-color:'+newcolor+';height:20px;width:20px;border-radius:50px"></div>'
  );
+ $('.color').click(function(){
+   removeElement(color,$(this).attr('value'));
+   console.log(color);
+   $(this).remove();
+ });
 console.log($('#colorarray').val());
 
  });
 
- function removeElement(array, elem) {
-    var index = array.indexOf(elem);
-    if (index > -1) {
-        array.splice(index, 1);
-    }
-}
 //add size
 var size = [];
  $('#sizeshow').click(function(){
@@ -267,16 +282,18 @@ var size = [];
  size.push(newsize);
  $('#sizearray').val(size);
  $('#insertsize').append(
- '<div class="btn" id="'+size+'" style="font-weight:bold;float:left;margin:2% 2% 2% 2%;height:20px;width:100px;border-radius:20px">'+newsize+'</div>'
+ '<div class="size btn" id="'+size+'" style="font-weight:bold;float:left;height:20px;width:100px;border-radius:20px">'+newsize+'</div>'
  );
- $("#"+size).click(function(){
+
+ $('.size').click(function(){
    removeElement(size,$(this).html());
-   console.log($('#sizearray').val());
+   console.log(size);
    $(this).remove();
  });
 console.log($('#sizearray').val());
 
  });
+
 //remove color
  $('#minus').click(function(){
  color = [];

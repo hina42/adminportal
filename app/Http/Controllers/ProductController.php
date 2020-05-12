@@ -6,9 +6,10 @@ use Illuminate\Http\Request;
 use App\category;
 use App\subcategory;
 use App\product;
+use App\description;
 use App\color;
-use App\yard;
 use App\size;
+use App\yard;
 class ProductController extends Controller
 {
     /**
@@ -97,6 +98,21 @@ class ProductController extends Controller
     public function destroy()
     { $id = request()->query('id');
         $prd = product::find($id);
+        $size = size::where('productid',$id)->pluck('SizeID');
+        $color = color::where('productid',$id)->pluck('ColorID');
+        if(!$color==null){
+        foreach($color as $colorid){
+            $delcolor = color::find($colorid);
+            $delcolor->delete();
+           }
+           $yard = yard::where('productid',$id)->first(); 
+           $yard->delete();
+        }
+           if(!$size==null){
+           foreach($size as $sizeid){
+            $delsize = size::find($sizeid);
+            $delsize->delete();
+           }}
         $prd->delete();
         return response()->json($id);
         

@@ -16,7 +16,7 @@ img{
    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
    border-radius:10%;
 }
-#color, a{
+#color, .btn-sm{
    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 </style>
@@ -120,11 +120,11 @@ img{
 <script>
 $(document).ready(function(){
    $('.prddel').click(function(){
- var delid = $(this).attr('id');     // alert(delid);
+ var delid = $(this).attr('id');      alert(delid);
  $('.delprdbtn').click(function(){
    $(".prd" + delid).remove();
    $.get("{{route('delprd')}}", {id:delid}, function(data){
-     //alert(data);
+     alert(data);
   });
  });
    
