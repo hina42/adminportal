@@ -128,12 +128,11 @@ img{
                                     <fieldset id="addsubcat">
                                     <p style="color:blue;font-weight:bold">Enter data to add subcategory...</p>
                                        <div class="col-md-6 form-group">
-                                          <label class="control-label">Select Category</label>
-                                       <select name="catid" id="category" type="text" placeholder="Item Name" class="form-control">
-                                       @foreach($data as $row)
-                                       <option value="{{$row->CategoryID}}">{{$row->CategoryType}}</option>
-                                       @endforeach
-                                       </select>
+                                       <label class="control-label">Subcategory</label>
+                                          <input type="text" list="findcat" placeholder="search category..." name="searchcat" id="searchcat" class="form-control">
+                                          <datalist id="findcat">
+                                   
+                                          </datalist>
                                        </div>
                                        <!-- Text input-->
                                        <div class="col-md-6 form-group">
@@ -383,15 +382,32 @@ $('#find').html(data);
  });
 
 });
+//search subcategory
 
-$('#searchsubcat').focus(function(){
-  
   var name = $('#searchsubcat').val();
 $.post('searchsubcat',{name : name,  "_token": "{{ csrf_token() }}",},function(data){
 $('#find').html(data);
 });
 
+
+//search category
+$('#searchcat').keyup(function(){
+  
+  var name = $('#searchcat').val();
+$.post('searchcat',{name : name,  "_token": "{{ csrf_token() }}",},function(data){
+$('#findcat').html(data);
 });
+
+});
+
+
+ 
+ var name = $('#searchcat').val();
+$.post('searchcat',{name : name,  "_token": "{{ csrf_token() }}",},function(data){
+$('#findcat').html(data);
+});
+
+
 
 
 });

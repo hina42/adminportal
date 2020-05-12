@@ -65,10 +65,11 @@ class CategoryController extends Controller
         if(!$request->subcattype == null)
         {   $subcat = new subcategory();
             $subcat->SubCatType = $request->subcattype;
-            $subcat->CategoryID = $request->catid;
-            $subcat->save();
+            $catid = category::where('CategoryType',$request->searchcat)->pluck('CategoryID');
+            $subcat->CategoryID = $catid[0];
+           $subcat->save();
         }
-         if($request->has('prdname'))
+         if(!$request->prdname == null)
          {  
             $prd = new product();
             $prd->ProductName = $request->prdname;
@@ -172,6 +173,25 @@ class CategoryController extends Controller
 
     public function searchsubcat(Request $request){
         $data = subcategory::pluck('SubCatType');
+        $find = $request->name;
+        if(!$find == null){
+            foreach($data as $type){
+          if(strpos($type, $find) !== false)
+          {
+            echo "<option value='".$type."' >".$type."</option><br>";
+           
+         }
+        }
+         }
+         else{
+            foreach($data as $type){ 
+                echo "<option value='".$type."' >".$type."</option><br>";
+            }
+          }
+    }
+
+    public function searchcat(Request $request){
+        $data = category::pluck('CategoryType');
         $find = $request->name;
         if(!$find == null){
             foreach($data as $type){

@@ -377,6 +377,7 @@
                      </a>
                      <ul class="treeview-menu">
                         <li><a href="category">Category</a></li>
+                        <li><a href="subcategory">Subcategory</a></li>
                         <li><a href="product">Product</a></li>
                        
                      </ul>
