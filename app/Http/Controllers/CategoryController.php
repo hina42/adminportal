@@ -67,19 +67,44 @@ class CategoryController extends Controller
         }
         if($request->has('prdname'))
         {$prd = new product();
-            $prd->ProductName = $request->prdname;
-            $prd->SubCatID = $request->subcategory;
-            $prd->ProductPrice = $request->price;
-            $desc = new description();
-            $color = new color();
-            $desc->Description = $request->desc;
-            $desc->save();
-            $descid = $desc->DescriptionID;
-            $prd->DescriptionID = $descid;
-            $prd->Image = 'http://waar.ae/waar/img/embroidery2.jpg';
-          $prd->save();
+            // $prd->ProductName = $request->prdname;
+            // $subcatid = subcategory::where('SubCatType',$request->searchsubcat)->pluck('SubCatID');
+            // $prd->SubCatID = $subcat[0];
+            // $prd->ProductPrice = $request->price;
+            // $desc = new description();
+            // $desc->Description = $request->desc;
+        //     $desc->save();
+        //     $descid = description::orderBy('DescriptionID','DESC')->pluck('DescriptionID');
+        //     $prd->DescriptionID = $descid[0];
+        //     $prd->Image = 'http://waar.ae/waar/img/embroidery2.jpg';
+        if($request->min){
+            
         }
-        return response()->json("success"); 
+        //   $prd->save();
+           $prdid = product::orderBy('ProductID','DESC')->pluck('ProductID');
+           //color
+           if($request->colorarray){
+          $colorarr = explode(',',$request->colorarray);
+            foreach($colorarr as $color){
+                $newcolor = new color();
+               $newcolor->Color = $color;
+               $newcolor->productid = $prdid[0];
+               $newcolor->save();      
+       }
+           }
+           //size
+    if($request->sizearray){
+    $sizearr = explode(',',$request->sizearray);
+            foreach($sizearr as $size){
+                $newsize = new size();
+               $newsize->Size = $size;
+               $newsize->productid = $prdid[0];
+               $newsize->save();      
+       }}
+
+        }
+     //   dd($colorarr);
+       return response()->json("success"); 
     }
 
     /**
@@ -138,12 +163,8 @@ class CategoryController extends Controller
 
     public function searchsubcat(Request $request){
         $data = subcategory::pluck('SubCatType');
-        $find = $request->name;$found = array(); $subcat = "";
+        $find = $request->name;
         if(!$find == null){
-    //    foreach($data as $name){
-    //      array_push($found,$name);
-    //    }
-       
             foreach($data as $type){
           if(strpos($type, $find) !== false)
           {
@@ -152,6 +173,10 @@ class CategoryController extends Controller
          }
         }
          }
-       // return response()->json($subcat);
+         else{
+            foreach($data as $type){ 
+                echo "<option value='".$type."' >".$type."</option><br>";
+            }
+          }
     }
 }

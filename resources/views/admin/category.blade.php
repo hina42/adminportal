@@ -156,6 +156,7 @@ img{
                                           <label class="control-label">Subcategory</label>
                                           <input type="text" list="find" placeholder="search subcategory..." name="searchsubcat" id="searchsubcat" class="form-control">
                                           <datalist id="find">
+                                   
                                           </datalist>
                                          
                                      </div>
@@ -170,9 +171,17 @@ img{
                                           <input id="color"type="color"name="color" placeholder="Enter color" class="form-control">
                                           <div  style="margin:2% 2% 2% 2%;"id="show" class=" btn btn-sm btn-warning"><i class="fa fa-plus"></i></div>
                                           <div  style="margin:2% 2% 2% 2%;"id="minus" class=" btn btn-sm btn-danger"><i class="fa fa-minus"></i></div>
+                                          <div id="insertcolor">sds</div>
                                           <input type="hidden" name="colorarray" id="colorarray">
                                        </div>
-                                     
+                                       <div id="sizeinput"class="col-md-6 form-group">
+                                          <label class="control-label">Size</label>
+                                          <input id="size" type="text" name="size" placeholder="Enter size" class="form-control">
+                                          <div  style="margin:2% 2% 2% 2%;"id="sizeshow" class=" btn btn-sm btn-warning"><i class="fa fa-plus"></i></div>
+                                          <div  style="margin:2% 2% 2% 2%;"id="sizeminus" class=" btn btn-sm btn-danger"><i class="fa fa-minus"></i></div>
+                                         <div id="insertsize">sds</div>
+                                          <input type="hidden" name="sizearray" id="sizearray">
+                                       </div>
                                        <div class="col-md-6 form-group">
                                           <label class="control-label">Price</label>
                                           <input type="number" placeholder="Enter price" name="price"class="form-control">
@@ -233,22 +242,55 @@ img{
 <script>
 $(document).ready(function(){
    var color = [];
+   //addcolor
  $('#show').click(function(){
  var newcolor = $('#color').val();
  color.push(newcolor);
  $('#colorarray').val(color);
- $('#colorinput').append(
+ $('#insertcolor').append(
  '<div id="display" style="float:left;margin:2% 2% 2% 2%;background-color:'+newcolor+';height:20px;width:20px;border-radius:50px"></div>'
  );
 console.log($('#colorarray').val());
 
  });
 
+ function removeElement(array, elem) {
+    var index = array.indexOf(elem);
+    if (index > -1) {
+        array.splice(index, 1);
+    }
+}
+//add size
+var size = [];
+ $('#sizeshow').click(function(){
+ var newsize = $('#size').val(); 
+ size.push(newsize);
+ $('#sizearray').val(size);
+ $('#insertsize').append(
+ '<div class="btn" id="'+size+'" style="font-weight:bold;float:left;margin:2% 2% 2% 2%;height:20px;width:100px;border-radius:20px">'+newsize+'</div>'
+ );
+ $("#"+size).click(function(){
+   removeElement(size,$(this).html());
+   console.log($('#sizearray').val());
+   $(this).remove();
+ });
+console.log($('#sizearray').val());
+
+ });
+//remove color
  $('#minus').click(function(){
- color.pop();
+ color = [];
  $('#colorarray').val(color);
- $('#display').remove();
+ $('#insertcolor').empty();
 console.log($('#colorarray').val());
+
+ });
+//remove size
+ $('#sizeminus').click(function(){
+ size = [];
+ $('#sizearray').val(size);
+ $('#insertsize').empty();
+console.log($('#sizearray').val());
 
  });
 
@@ -317,12 +359,23 @@ else if(form == 3)
 
 
 $('#searchsubcat').keyup(function(){
+  
    var name = $('#searchsubcat').val();
 $.post('searchsubcat',{name : name,  "_token": "{{ csrf_token() }}",},function(data){
 $('#find').html(data);
  });
 
 });
+
+$('#searchsubcat').focus(function(){
+  
+  var name = $('#searchsubcat').val();
+$.post('searchsubcat',{name : name,  "_token": "{{ csrf_token() }}",},function(data){
+$('#find').html(data);
+});
+
+});
+
 
 });
 </script>
