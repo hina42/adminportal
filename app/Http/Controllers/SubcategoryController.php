@@ -73,9 +73,21 @@ class SubcategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $id = $request->updatesubcatid;
+        $subcat = subcategory::find($id);
+        $catid = category::where('CategoryType',$request->searchcat)->pluck('CategoryID');
+        $subcat->update([
+            'SubCatType'=>$request->SubCatType,
+            'CategoryID'=>$catid[0],
+        ]);
+        $data = [
+            'id'=>$request->updatesubcatid,
+            'type'=>$request->SubCatType,
+            'cat'=>$request->searchcat,
+        ];
+         return response()->json($data); 
     }
 
     /**
@@ -87,7 +99,7 @@ class SubcategoryController extends Controller
     public function destroy()
     {
        $id = request()->query('id'); 
-       $data="a";
+       $data="";
        $subcat = subcategory::find($id);
         $prd = product::where('SubcatID',$id)->pluck('ProductID');
        if($prd->isEmpty()){
@@ -98,5 +110,12 @@ class SubcategoryController extends Controller
           $data = 'You must delete all products of this subcategory';
       }
        return response()->json($data);
+    }
+
+    public function fetchsubcat(){
+        $id = request()->query('id');
+        $subcat = subcategory::where("SubCatID",$id)->pluck('SubCatType');
+      
+    return response()->json($subcat);
     }
 }

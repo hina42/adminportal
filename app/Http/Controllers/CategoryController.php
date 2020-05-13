@@ -146,9 +146,23 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request)
+    {  
+      $id = $request->updatecatid;
+      $cat = category::find($id);
+      if(!$request->file('updatecatimg')){
+       $cat->update($request->all());
+        
+      }
+      else{
+            $cat->update([
+                'CatName'=>$request->updatecatname,
+                'CategoryType'=>$request->updatecattype,
+                'image'=>"http://waar.ae/waar/img/embroidery2.jpg"]);
+        }
+
+        $catdata = category::where('CategoryID',$id)->first();
+       return response()->json($catdata); 
     }
 
     /**
@@ -207,5 +221,12 @@ class CategoryController extends Controller
                 echo "<option value='".$type."' >".$type."</option><br>";
             }
           }
+    }
+
+    public function fetchcat(){
+        $id = request()->query('id');
+        $cat = category::where("CategoryID",$id)->first();
+      
+    return response()->json($cat);
     }
 }

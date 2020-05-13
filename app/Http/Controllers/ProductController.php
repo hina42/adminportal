@@ -84,9 +84,23 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+      $id = $request->updateprdid;
+    //   $prd = product::find($id);
+    //   if(!$request->file('updateprdimg')){
+    //    $prd->update($request->all());
+        
+    //   }
+    //   else{
+    //         $prd->update([
+    //             'CatName'=>$request->updatecatname,
+    //             'CategoryType'=>$request->updatecattype,
+    //             'image'=>"http://waar.ae/waar/img/embroidery2.jpg"]);
+    //     }
+
+    //     $catdata = category::where('CategoryID',$id)->first();
+       return response()->json('success'); 
     }
 
     /**

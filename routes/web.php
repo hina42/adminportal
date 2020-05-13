@@ -30,11 +30,16 @@ Route::group(['middleware'=>['auth','admin']],function(){
   Route::post('/additem','CategoryController@store')->name('additem');
   Route::post('/searchsubcat','CategoryController@searchsubcat')->name('searchsubcat');
   Route::post('/searchcat','CategoryController@searchcat')->name('searchcat');
+  Route::get('/fetchcat','CategoryController@fetchcat')->name('fetchcat');
+  Route::post('/updatecat','CategoryController@update')->name('updatecat');
   //subcategory
   Route::get('/subcategory','SubcategoryController@index');
   Route::get('/delsubcat','SubcategoryController@destroy')->name('delsubcat');
+  Route::post('/updatesubcat','SubcategoryController@update')->name('updatesubcat');
+  Route::get('/fetchsubcat','SubcategoryController@fetchsubcat')->name('fetchsubcat');
   //product
   Route::get('/product','ProductController@index');
   Route::get('/delprd','ProductController@destroy')->name('delprd');
+  Route::post('/updateprd','ProductController@update')->name('updateprd');
 
 });

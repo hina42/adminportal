@@ -48,11 +48,12 @@ img{
                                     </tr>
                                  </thead>
                                  <tbody>
+                                 @if(!$data==null)
                                  @foreach($data as $row)
                                     <tr class='item{{$row->CategoryID}}'>
-                                       <td><img  height="80" width="100" src="{{$row->image}}" alt="..."></td>
-                                       <td>{{$row->CatName}}</td>
-                                       <td>{{$row->CategoryType}}</td>
+                                       <td><img class="img{{$row->CategoryID}}" height="80" width="100" src="{{$row->image}}" alt="..."></td>
+                                       <td class="name{{$row->CategoryID}}">{{$row->CatName}}</td>
+                                       <td class="type{{$row->CategoryID}}">{{$row->CategoryType}}</td>
                                        <td>  @foreach($row->subcategory as $subcat)
                                        - {{$subcat->SubCatType}} <br>
                                        @endforeach</td>
@@ -60,17 +61,21 @@ img{
                                        <td>{{$row->updated_at}}</td>
                                        <td><span class="label-success label label-default" >Active</span>
                                        </td>
-                                       <td><a href="#" class="btn-sm btn-warning" ><i class="fa fa-edit"></i></a>
-                                       <a href="#delitem" id='{{$row->CategoryID}}' data-toggle="modal" data-target="#delitem"class="del btn-sm btn-danger" ><i class="fa fa-trash"></i></a>
+                                       <td><a href="#updatecat" id='{{$row->CategoryID}}' data-toggle="modal" data-target="#updatecat"class="updatecat btn-sm btn-warning" ><i class="fa fa-edit"></i></a>
+                                       <!-- <a href="#delitem" id='{{$row->CategoryID}}'data-toggle="modal" data-target="#delitem"class="del btn-sm btn-danger" ><i class="fa fa-trash"></i></a> -->
                                        </td>
                                     </tr>
                                    
                                     @endforeach
+
                                  </tbody>
                               </table> 
                              
                                {{$data[$max-1]->subcategory->links()}}
-                              
+                               @endif
+                              @if($data==null)
+                              No data available
+                              @endif
                            </div>
                         </div>
                      </div>
@@ -128,7 +133,7 @@ img{
                                     <fieldset id="addsubcat">
                                     <p style="color:blue;font-weight:bold">Enter data to add subcategory...</p>
                                        <div class="col-md-6 form-group">
-                                       <label class="control-label">Subcategory</label>
+                                       <label class="control-label">Select category</label>
                                           <input type="text" list="findcat" placeholder="search category..." name="searchcat" id="searchcat" class="form-control">
                                           <datalist id="findcat">
                                    
@@ -244,6 +249,49 @@ img{
                   </div>
                   <!-- /.modal-dialog -->
                </div> 
+
+
+               <div class="modal fade" id="updatecat" tabindex="-1" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-edit"></i> Upadate category</h3>
+                        </div>
+                        <div class="modal-body">
+                           <div class="row">
+                              <div class="col-md-12">
+                              <div class="col-md-6 form-group">
+                              <form id='updatecatform' action="{{route('updatecat')}}" method="post" enctype="multipart/form-data">
+                                @csrf  
+                                          <label class="control-label">Name</label>
+                                          <input type="hidden" id="updatecatid" name="updatecatid" >
+                                          <input type="text" id="editcatname" value="" id='updatecatname'name="CatName" class="form-control">
+                                       </div>
+                                       <!-- Text input-->
+                                       <div class="col-md-6 form-group">
+                                          <label class="control-label">Type</label>
+                                          <input type="text" value="" id="editcattype"name="CategoryType" class="form-control">
+                                       </div>
+                                       <div class="col-md-12 form-group">
+                                          <label class="control-label">Image</label><br>
+                                          <input type="file" id="editcatimg"  name="updatecatimg"  >
+                                          <img style="margin:2% 2% 2% 2%;"id="displaycatimg" src="" height="100px" width="100px" alt="">
+                                       </div>
+                                       <button type="submit" class="updatecatbtn btn btn-danger pull-left" >Save changes</button>
+                        </form>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                       
+                           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div> 
       @endsection
 
 
@@ -309,17 +357,17 @@ console.log($('#colorarray').val());
 console.log($('#sizearray').val());
 
  });
-
-$('.del').click(function(){
- var delid = $(this).attr('id');
- $('.delbtn').click(function(){
-   $(".item" + delid).remove();
-   $.get("{{route('delcat')}}", {id:delid}, function(data){
+//delete category and its subcategories
+// $('.del').click(function(){
+//  var delid = $(this).attr('id');
+//  $('.delbtn').click(function(){
+//    $(".item" + delid).remove();
+//    $.get("{{route('delcat')}}", {id:delid}, function(data){
      
-  });
- });
+//   });
+//  });
    
-});
+// });
 
 //form switch
 $("#addsubcat").hide();
@@ -407,7 +455,39 @@ $.post('searchcat',{name : name,  "_token": "{{ csrf_token() }}",},function(data
 $('#findcat').html(data);
 });
 
+//update category
+$('.updatecat').click(function(){
+ var catid = $(this).attr('id');
 
+   $.get("{{route('fetchcat')}}", {id:catid}, function(data){
+//alert(data.image);
+var img = data.image;
+$('#updatecatid').val(catid);
+$('#editcattype').attr('placeholder',data.CategoryType);
+$('#editcatname').attr('placeholder',data.CatName);
+//$('#editcatimg').val(img);
+$('#displaycatimg').attr('src',img);
+ });
+   
+});
+
+$('.updatecatbtn').click(function(){
+   $('#updatecatform').on('submit', function(event){
+  event.preventDefault();
+  $.ajax({
+    url:"{{ route('updatecat') }}",
+    method:"POST",
+    data: $('form').serialize(),
+    dataType:"json",
+    success:function(data)
+    { 
+    $('.name'+data.CategoryID).html(data.CatName);
+    $('.type'+data.CategoryID).html(data.CategoryType);
+    $('.img'+data.CategoryID).attr('src',data.image);
+   
+    }
+   });});
+});
 
 
 });

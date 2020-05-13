@@ -73,7 +73,7 @@ img{
                                        <td>{{$row->desc}}</td>
                                        <td>{{$row->ProductPrice}}</td>
                                        <td>
-                                      <a href="#" class="btn-sm btn-warning" ><i class="fa fa-edit"></i></a>
+                                      <a href="#updateprd" id='{{$row->ProductID}}' data-toggle="modal" data-target="#updateprd"class="updateprd btn-sm btn-warning" ><i class="fa fa-edit"></i></a>
                                        <a href="#delprd" id='{{$row->ProductID}}' data-toggle="modal" data-target="#delprd"class="prddel btn-sm btn-danger" ><i class="fa fa-trash"></i></a>
                                        </td>
                                     </tr>
@@ -112,7 +112,87 @@ img{
                <!-- /.modal -->
               <!-- Modal -->
              
-                 
+              <div class="modal fade" id="updateprd" tabindex="-1" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog">
+                     <div class="modal-content">
+                        <div class="modal-header modal-header-primary">
+                           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                           <h3><i class="fa fa-edit"></i> Update product</h3>
+                        </div>
+                        <div class="modal-body">
+                           <div class="row">
+                              <div class="col-md-12">
+                              
+                              <form id='updateprdform' action="{{route('updateprd')}}" method="post" enctype="multipart/form-data">
+                                @csrf  
+                               
+                                <div class="col-md-6 form-group">
+                                          <label class="control-label">Subcategory</label>
+                                          <input type="text" list="find" placeholder="search subcategory..." name="searchsubcat" id="searchsubcat" class="form-control">
+                                          <datalist id="find">
+                                   
+                                          </datalist>
+                                         
+                                     </div>
+                                       <div class="col-md-6 form-group">
+                                          <label class="control-label">Product Name</label>
+                                          <input type="text" name="prdname"placeholder="Enter product name" class="form-control">
+                                       </div>
+                                       <!-- Text input-->
+                                      
+                                       <div id="colorinput"class="col-md-6 form-group">
+                                          <label class="control-label">color</label>
+                                          <input id="color"type="color"name="color" placeholder="Enter color" class="form-control">
+                                          <div  style="margin:2% 2% 2% 2%;"id="show" class=" btn btn-sm btn-warning"><i class="fa fa-plus"></i></div>
+                                          <div  style="margin:2% 2% 2% 2%;"id="minus" class=" btn btn-sm btn-danger"><i class="fa fa-minus"></i></div>
+                                          <div id="insertcolor"></div>
+                                          <input type="hidden" name="colorarray" id="colorarray">
+                                       </div>
+                                       <div id="sizeinput"class="col-md-6 form-group">
+                                          <label class="control-label">Size</label>
+                                          <input id="size" type="text" name="size" placeholder="Enter size" class="form-control">
+                                          <div  style="margin:2% 2% 2% 2%;"id="sizeshow" class=" btn btn-sm btn-warning"><i class="fa fa-plus"></i></div>
+                                          <div  style="margin:2% 2% 2% 2%;"id="sizeminus" class=" btn btn-sm btn-danger"><i class="fa fa-minus"></i></div>
+                                         <div id="insertsize"></div>
+                                          <input type="hidden" name="sizearray" id="sizearray">
+                                       </div>
+                                       <div class="col-md-6 form-group">
+                                          <label class="control-label">Price</label>
+                                          <input type="number" placeholder="Enter price" name="price"class="form-control">
+                                       </div>
+                                       <div class="col-md-3  form-group">
+                                          <label class="control-label">Yard min</label>
+                                        <input type="number"  placeholder="Minimum" name="min"class="form-control">
+                                   
+                                       </div>
+                                       <div class="col-md-3  form-group">
+                                          <label class="control-label">Yard max</label>
+                                          <input type="number"  placeholder="Maximum" name="max"class="form-control ">
+                                   
+                                       </div>
+                                       <div class="col-md-12 form-group">
+                                          <label class="control-label">Description</label><br>
+                                          <input type="text" class="form-control" name="desc" >
+                                       </div>
+                                       <div class="col-md-12 form-group">
+                                          <label class="control-label">Image</label><br>
+                                          <input type="file" id="updateprdimg"name="updateprdimg" >
+                                          <img style="margin:2% 2% 2% 2%;"id="displayprdimg" src="" height="100px" width="100px" alt="">
+                                       </div>
+                                       <button type="submit" class="updateprdbtn btn btn-danger pull-left" >Save changes</button>
+                        </form>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="modal-footer">
+                       
+                           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
+                        </div>
+                     </div>
+                     <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
+               </div>         
       @endsection
 
 
