@@ -86,20 +86,30 @@ class ProductController extends Controller
      */
     public function update(Request $request)
     {
-      $id = $request->updateprdid;
-    //   $prd = product::find($id);
-    //   if(!$request->file('updateprdimg')){
-    //    $prd->update($request->all());
+      $id = $request->ProductID;
+       $prd = product::find($id);
+   $subcat = subcategory::where('SubCatType',$request->subcat)->pluck("SubCatID");
+   description::where("DescriptionID",$prd['DescriptionID'])->update(['Description'=>$request->Description]);
+   if(!$request->Min==null)
+   yard::where("productid",$id)->update(['Min'=>$request->Min]);
+   if(!$request->Max==null)
+   yard::where("productid",$id)->update(['Max'=>$request->Max]);
+      if(!$request->file('prdimg')){
+      $prd->update([
+           'ProductName'=>$request->ProductName,
+            'ProductPrice'=>$request->ProductPrice,
+            'SubCatID'=>$subcat[0],
+     ]);
         
-    //   }
+      }
     //   else{
-    //         $prd->update([
-    //             'CatName'=>$request->updatecatname,
-    //             'CategoryType'=>$request->updatecattype,
-    //             'image'=>"http://waar.ae/waar/img/embroidery2.jpg"]);
     //     }
-
-    //     $catdata = category::where('CategoryID',$id)->first();
+    //     $product =product::where('ProductID',$id)->first();
+    //     $prd->yard;
+    //     $prd->subcategory;
+    //     $prd->color;
+    //     $prd->size;
+    //     $prd->description;
        return response()->json('success'); 
     }
 
@@ -130,6 +140,19 @@ class ProductController extends Controller
         $prd->delete();
         return response()->json($id);
         
+    }
+
+
+    public function fetchprd(){
+        $id = request()->query('id');
+        $prd = product::where("ProductID",$id)->first();
+        $prd->yard;
+        $prd->subcategory;
+        $prd->color;
+        $prd->size;
+        $prd->description;
+      
+    return response()->json($prd);
     }
 
 }

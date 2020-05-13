@@ -41,5 +41,6 @@ Route::group(['middleware'=>['auth','admin']],function(){
   Route::get('/product','ProductController@index');
   Route::get('/delprd','ProductController@destroy')->name('delprd');
   Route::post('/updateprd','ProductController@update')->name('updateprd');
+  Route::get('/fetchprd','ProductController@fetchprd')->name('fetchprd');
 
 });

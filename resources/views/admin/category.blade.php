@@ -177,6 +177,7 @@ img{
                                           <div  style="margin:2% 2% 2% 2%;"id="minus" class=" btn btn-sm btn-danger"><i class="fa fa-minus"></i></div>
                                           <div id="insertcolor"></div>
                                           <input type="hidden" name="colorarray" id="colorarray">
+                                          <small> click the added color to remove it</small>
                                        </div>
                                        <div id="sizeinput"class="col-md-6 form-group">
                                           <label class="control-label">Size</label>
@@ -185,6 +186,7 @@ img{
                                           <div  style="margin:2% 2% 2% 2%;"id="sizeminus" class=" btn btn-sm btn-danger"><i class="fa fa-minus"></i></div>
                                          <div id="insertsize"></div>
                                           <input type="hidden" name="sizearray" id="sizearray">
+                                          <small> click the added size to remove it</small>
                                        </div>
                                        <div class="col-md-6 form-group">
                                           <label class="control-label">Price</label>
