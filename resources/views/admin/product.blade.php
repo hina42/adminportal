@@ -50,28 +50,28 @@ img{
                                  @foreach($data as $row)
                                     <tr class='prd{{$row->ProductID}}'>
                                        <td><img  height="100" width="100" src="{{$row->Image}}" alt="..."></td>
-                                       <td>{{$row->ProductName}}</td>
-                                       <td>
+                                       <td class="name{{$row->ProductID}}" >{{$row->ProductName}}</td>
+                                       <td class="subcat{{$row->ProductID}}" >
                                        {{$row->subcategory['SubCatType']}} <br>
                                        </td>
-                                       <td>
+                                       <td class="color{{$row->ProductID}}" >
                                        @foreach($row->color as $i)
                                       <h1 class="color"style="float:left;margin:2% 2% 2% 2%;background-color:{{$i->Color}};height:20px;width:20px;border-radius:50px"></h1>
                                        @endforeach
                                        </td>
-                                       <td>
+                                       <td class="size{{$row->ProductID}}"  >
                                        @foreach($row->size as $i)
                                        - {{$i->Size}} <br>
                                        @endforeach
                                        </td>
-                                       <td>
+                                       <td class="yard{{$row->ProductID}}"  >
                                        @if(!$row->yard == null)
                                       {{ 'Min: '.$row->yard['Min']}} <br>
                                       {{ 'Max: '.$row->yard['Max']}}
                                        @endif
                                        </td>
-                                       <td>{{$row->desc}}</td>
-                                       <td>{{$row->ProductPrice}}</td>
+                                       <td class="desc{{$row->ProductID}}" >{{$row->desc}}</td>
+                                       <td class="price{{$row->ProductID}}" >{{$row->ProductPrice}}</td>
                                        <td>
                                       <a href="#updateprd" id='{{$row->ProductID}}' data-toggle="modal" data-target="#updateprd"class="updateprd btn-sm btn-warning" ><i class="fa fa-edit"></i></a>
                                        <a href="#delprd" id='{{$row->ProductID}}' data-toggle="modal" data-target="#delprd"class="prddel btn-sm btn-danger" ><i class="fa fa-trash"></i></a>
@@ -81,6 +81,7 @@ img{
                                  </tbody>
                               </table>
                            </div>
+                           {!! str_replace('?','adminportal/product?', $data->render()) !!}
                         </div>
                      </div>
                   </div>
@@ -338,8 +339,27 @@ $('.updateprdbtn').click(function(){
     dataType:"json",
     success:function(data)
     { 
-    alert(data);
-   
+   // alert(data['colorarr'].length);
+    $('.name'+data.ProductID).html(data.name);
+    $('.price'+data.ProductID).html(data.price);
+    $('.desc'+data.ProductID).html(data.desc);
+    $('.subcat'+data.ProductID).html(data.subcat);
+    if(data.min)
+     $('.yard'+data.ProductID).html('Min: '+data.min+', Max: '+data.max);
+     if(data['sizearr'].length){
+       $('.size'+data.ProductID).empty();
+       for(var i=0; i<data['sizearr'].length; i++){
+    $('.color'+data.ProductID).append(
+      '<div class="color btn-sm" value="'+data['sizearr'][i]+'" id="display" style="float:left;margin:2% 2% 2% 2%;background-color:'+data['sizearr'][i]+';height:20px;width:20px;border-radius:50px"></div>');
+    }
+    }
+    if(data['colorarr'].length>0){
+       $('.color'+data.ProductID).empty();
+       for(var i=0; i<data['colorarr'].length; i++){
+    $('.color'+data.ProductID).append(
+      '<div class="color btn-sm" value="'+data['colorarr'][i]+'" id="display" style="float:left;margin:2% 2% 2% 2%;background-color:'+data['colorarr'][i]+';height:20px;width:20px;border-radius:50px"></div>');
+    }
+    }
     }
    });});
 });

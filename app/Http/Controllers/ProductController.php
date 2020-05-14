@@ -10,6 +10,9 @@ use App\description;
 use App\color;
 use App\size;
 use App\yard;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 class ProductController extends Controller
 {
     /**
@@ -30,10 +33,16 @@ class ProductController extends Controller
             $data->yard;
             $data->subcategory;
             $finaldata[]=$data;}
-      return view('admin.product',['data'=>$finaldata]);
+            $data = $this->paginate($finaldata);
+      return view('admin.product',compact('data'));
     //return dd($finaldata[0]->desc);
     }
-
+    public function paginate($items, $perPage = 3, $page = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -102,15 +111,20 @@ class ProductController extends Controller
      ]);
         
       }
-    //   else{
-    //     }
-    //     $product =product::where('ProductID',$id)->first();
-    //     $prd->yard;
-    //     $prd->subcategory;
-    //     $prd->color;
-    //     $prd->size;
-    //     $prd->description;
-       return response()->json('success'); 
+      $colorarr = explode(',',$request->colorarray);
+      $sizerarr = explode(',',$request->sizearray);
+       $data = [
+           'ProductID'=>$id,
+           'name'=>$request->ProductName,
+           'price'=>$request->ProductPrice,
+           'desc'=>$request->Description,
+           'colorarr'=>$colorarr,
+           'sizearr'=>$sizerarr,
+           'min'=>$request->Min,
+           'max'=>$request->Max,
+           'subcat'=>$request->subcat,
+       ];
+       return response()->json($data); 
     }
 
     /**
