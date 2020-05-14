@@ -200,4 +200,27 @@ if($request->sizearray){
     return response()->json($prd);
     }
 
+    public function filterprd(){
+      $search = request()->query('searchprd');
+      if(!$search==null){
+        $finaldata = array();
+        $subid = subcategory::where("SubCatType",$search)->pluck('SubCatID');
+        $prd = product::where('SubCatID',$subid[0])->pluck('ProductID');
+          foreach ($prd as $id) {
+            $data=product::where('ProductID',$id)->first();
+            $descdata=product::where('ProductID',$id)->first();
+            $desc = $descdata->description->Description;
+            $data->color;
+            $data->desc = $desc;
+            $data->size;
+            $data->yard;
+            $data->subcategory;
+            $finaldata[]=$data;}
+            $data = $this->paginate($finaldata);
+      return view('admin.product',compact('data'));}
+      else{
+          return redirect()->back();
+      }
+    }
+
 }

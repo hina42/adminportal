@@ -36,9 +36,10 @@ img{
 
                         <form style="margin-top:2%" class="row"action="">
                         <div class=" col-md-4 form-group">
-                           <input type="text"  placeholder="search..." name="searchcat" id="searchcat" class="form-control">
+                           <input type="text"  list="findcat"placeholder="search..." name="searchcat" id="searchcat" class="form-control">
                         </div>
                         <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                        <a href="category"class="btn btn-info"><i class="fa fa-refresh" ></i></a>
                         </form>
                            <div style ="margin-top:2%"class="table-responsive">
                               <table id="dataTableExample1" class="table table-bordered table-striped table-hover">

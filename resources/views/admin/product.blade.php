@@ -31,11 +31,12 @@ img{
                            </div>
                         </div>
                         <div class="panel-body">
-                        <form class="row"action="">
+                        <form class="row"action="{{route('filterprd')}}">
                         <div class=" col-md-4 form-group">
-                           <input type="text"  placeholder="search..." name="searchprd" id="searchprd" class="form-control">
+                           <input type="text"  list="find"  placeholder="search..." name="searchprd" id="searchprd" class="form-control">
                         </div>
                         <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                        <a href="product"class="btn btn-info"><i class="fa fa-refresh" ></i></a>
                         </form>
                            <div style ="margin-top:2%"class="table-responsive">
                               <table   id="dataTableExample1" class="table table-bordered table-striped table-hover">
@@ -87,7 +88,14 @@ img{
                                  </tbody>
                               </table>
                            </div>
+                           @php $search = request()->query('searchprd');@endphp
+                           @if($search==null)
                            {!! str_replace('?','adminportal/product?', $data->render()) !!}
+                           @endif
+                           @if(!$search==null)
+                           {!! str_replace('?','adminportal/filterprd?$search?', $data->render()) !!}
+                           @endif
+                           
                         </div>
                      </div>
                   </div>
