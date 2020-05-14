@@ -5,6 +5,9 @@ use Illuminate\Http\Request;
 use App\category;
 use App\subcategory;
 use App\product;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 class SubcategoryController extends Controller
 {
     /**
@@ -20,9 +23,15 @@ class SubcategoryController extends Controller
             $sub->category;
             $data[] = $sub;
         }
-     return view('admin.subcategory',['data'=>$data]);
+        $data = $this->paginate($data);
+     return view('admin.subcategory',compact('data'));
     }
-
+    public function paginate($items, $perPage = 3, $page = null, $options = [])
+    {
+        $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+        $items = $items instanceof Collection ? $items : Collection::make($items);
+        return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
+    }
     /**
      * Show the form for creating a new resource.
      *

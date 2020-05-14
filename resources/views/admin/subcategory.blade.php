@@ -31,6 +31,12 @@ img{
                            </div>
                         </div>
                         <div class="panel-body">
+                        <form class="row"action="">
+                        <div class=" col-md-4 form-group">
+                           <input type="text"  placeholder="search..." name="searchsubcat" id="searchsubcat" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                        </form>
                            <div style ="margin-top:2%"class="table-responsive">
                               <table   id="dataTableExample1" class="table table-bordered table-striped table-hover">
                                  <thead>
@@ -59,6 +65,7 @@ img{
                                     @endforeach
                                  </tbody>
                               </table>
+                              {!! str_replace('?','adminportal/subcategory?', $data->render()) !!}
                            </div>
                         </div>
                      </div>

@@ -103,6 +103,39 @@ class ProductController extends Controller
    yard::where("productid",$id)->update(['Min'=>$request->Min]);
    if(!$request->Max==null)
    yard::where("productid",$id)->update(['Max'=>$request->Max]);
+   $colorarr = explode(',',$request->colorarray);
+   $sizerarr = explode(',',$request->sizearray);
+   $size = size::where('productid',$id)->pluck('SizeID');
+        $color = color::where('productid',$id)->pluck('ColorID');
+if($request->colorarray){
+    if(!$color==null){
+        foreach($color as $colorid){
+            $delcolor = color::find($colorid);
+            $delcolor->delete();
+           }
+        }
+
+       foreach($colorarr as $color){
+        $newcolor = new color();
+       $newcolor->Color = $color;
+       $newcolor->productid = $id;
+       $newcolor->save();      
+}
+}
+if($request->sizearray){
+    if(!$size==null){
+        foreach($size as $sizeid){
+         $delsize = size::find($sizeid);
+         $delsize->delete();
+        }}
+        foreach($sizearr as $size){
+            $newsize = new size();
+           $newsize->Size = $size;
+           $newsize->productid = $id;
+           $newsize->save();      
+   }   
+}
+ 
       if(!$request->file('prdimg')){
       $prd->update([
            'ProductName'=>$request->ProductName,
@@ -111,8 +144,6 @@ class ProductController extends Controller
      ]);
         
       }
-      $colorarr = explode(',',$request->colorarray);
-      $sizerarr = explode(',',$request->sizearray);
        $data = [
            'ProductID'=>$id,
            'name'=>$request->ProductName,

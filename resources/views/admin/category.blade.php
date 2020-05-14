@@ -32,7 +32,14 @@ img{
                            </div>
                         </div>
                         <div class="panel-body">
-                                 <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#additem"><i class="fa fa-plus"></i> Add Items</a>
+                        <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#additem"><i class="fa fa-plus"></i> Add Items</a>
+
+                        <form style="margin-top:2%" class="row"action="">
+                        <div class=" col-md-4 form-group">
+                           <input type="text"  placeholder="search..." name="searchcat" id="searchcat" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                        </form>
                            <div style ="margin-top:2%"class="table-responsive">
                               <table id="dataTableExample1" class="table table-bordered table-striped table-hover">
                                  <thead>
